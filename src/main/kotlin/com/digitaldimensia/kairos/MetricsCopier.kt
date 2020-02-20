@@ -18,7 +18,7 @@ class MetricsCopier(
     private val mapper = ObjectMapper().registerKotlinModule()
 
     override fun processMetrics(metricNames: List<String>) {
-        val nameMap = metricNames.associateWith{metricPattern.matcher(it).replaceAll(replacement)}
+        val nameMap = metricNames.associateWith { metricPattern.matcher(it).replaceAll(replacement) }
         TermUi.echo("Matched ${metricNames.size} metrics")
         TermUi.echo("Renaming:")
         nameMap.forEach {
@@ -27,13 +27,14 @@ class MetricsCopier(
 
         TermUi.confirm("Rename?", abort = true)
 
-        nameMap.forEach {(srcMetric, destMetric) ->
+        nameMap.forEach { (srcMetric, destMetric) ->
             TermUi.echo("Processing metric '$srcMetric'")
             val query =
                 Query(
                     startAbsolute = startDate.toEpochMilli(),
                     metrics = listOf(MetricQuery(srcMetric)),
-                    endAbsolute = endDate.toEpochMilli())
+                    endAbsolute = endDate.toEpochMilli()
+                )
             val request = "$url/datapoints/query/tags".httpPost()
                 .header("Content-Type", "application/json")
                 .body(mapper.writeValueAsString(query))
@@ -54,7 +55,8 @@ class MetricsCopier(
                     MetricQuery(
                         name = srcMetric,
                         aggregators = listOf(SaveAsAggregator(destMetric)),
-                        groupBy = listOf(TagGroup(tagResult.tags.keys)))
+                        groupBy = listOf(TagGroup(tagResult.tags.keys))
+                    )
                 ),
                 endAbsolute = endDate.toEpochMilli()
             )

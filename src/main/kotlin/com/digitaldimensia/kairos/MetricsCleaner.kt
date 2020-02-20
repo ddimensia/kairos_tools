@@ -18,7 +18,7 @@ class MetricsCleaner(params: MetricsCommandParams): MetricsCommand(params) {
 
             metricNames.map {
                 val encodedName = URLEncoder.encode(it, "UTF8").replace("+", "%20")
-                val request = "$url/metric/$encodedName".httpDelete()
+                val request = "$url/metric/$encodedName".httpDelete().timeoutRead(120000)
                 if (dryRun) {
                     TermUi.echo("Request: $request")
                 } else {
@@ -29,6 +29,7 @@ class MetricsCleaner(params: MetricsCommandParams): MetricsCommand(params) {
                         }
                         is Result.Failure -> {
                             TermUi.echo("Failed to delete $it, exiting.")
+                            TermUi.echo("${deleteResult.error.message}")
                             return
                         }
                     }
