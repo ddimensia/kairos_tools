@@ -12,7 +12,7 @@
   <properties>
     <fuel.version>2.0.1</fuel.version>
     <kotlin.version>1.3.21</kotlin.version>
-    <jackson.version>2.9.10.3</jackson.version>
+    <jackson.version>2.12.7.1</jackson.version>
     <junit.version>4.12</junit.version>
     <main.class>com.digitaldimensia.kairos.KairosToolsKt</main.class>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
